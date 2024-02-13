@@ -27,9 +27,11 @@
 2. Условные блоки
 - IFBLOCK DIR -> проверить наличие края сетки в направлении DIR (RIGHT/UP/LEFT/DOWN). В случае наличия - выполнить следующий блок команд до ENDIF.
 - Обязательно наличие ENDIF и отступов!
-- Пример: `IFBLOCK RIGHT\n
-LEFT 3
-ENDIF`
+- Пример:
+
+`IFBLOCK RIGHT`
+     `LEFT 3`
+`ENDIF`
 
 Циклы
 REPEAT N -> повторяет блок до ENDREPEAT N раз
