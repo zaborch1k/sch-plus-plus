@@ -6,7 +6,7 @@
 
 # SCH1++ (SCHool educational 1nterpreter)
 
-***Прилагаются ссылки на файл с документацией и видеоролик, демонстрирующий работу программы (см. [url.md]([https://github.com/zaborch1k/sh1t-plus-plus/blob/master/url.md](https://github.com/zaborch1k/sch-plus-plus/blob/main/url.md)))***
+***Прилагаются ссылки на файл с документацией и видеоролик, демонстрирующий работу программы (см. [url.md](https://github.com/zaborch1k/sch-plus-plus/blob/main/url.md))***
 
 ## Руководство для пользователей
 ### Установка
