@@ -29,11 +29,9 @@
 - Обязательно наличие ENDIF и отступов!
 - Пример:
 
-`IFBLOCK RIGHT`
-
-     `LEFT 3`
-     
-`ENDIF`
+    `IFBLOCK RIGHT
+         LEFT 3
+    ENDIF`
 
 Циклы
 REPEAT N -> повторяет блок до ENDREPEAT N раз
