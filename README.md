@@ -1,13 +1,12 @@
 <picture>
- <source media="(prefers-color-scheme: dark)" srcset="sch++.png">
- <source media="(prefers-color-scheme: light)" srcset="sch++.png">
- <img alt="sch++" src="sch++.png">
+ <source media="(prefers-color-scheme: dark)" srcset="sch1++.png">
+ <source media="(prefers-color-scheme: light)" srcset="sch1++.png">
+ <img alt="sch1++" src="sch1++.png">
 </picture>
 
-# **SCH++
-## FAQ
+# SCH1++ (SCHool educational 1nterpreter)
 
-Если мы все же сумели убедить Вас скачать эту программу, считаем себя обязанными пройти этот ~не~легкий путь вместе с вами, поэтому ниже предоставлена инструкция для установки пользователям (будущим разработчикам) и разработчикам (которым необходим исходный код этой программы), а также описание работы всех модулей (для последних). ***Прилагаются сслыки на файл с документацией и видеоролик, демонстрирующий работу программы (см. [url.md](https://github.com/zaborch1k/sh1t-plus-plus/blob/master/url.md))***
+***Прилагаются сслыки на файл с документацией и видеоролик, демонстрирующий работу программы (см. [url.md](https://github.com/zaborch1k/sh1t-plus-plus/blob/master/url.md))***
 
 (**Примечание:** если руководство Вам не помогло/у Вас есть предложения по его улучшению -> наша служба поддержки всегда (почти) готова выслушать Вас!)
 
