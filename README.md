@@ -30,7 +30,9 @@
 - Пример:
 
 `IFBLOCK RIGHT`
+
      `LEFT 3`
+     
 `ENDIF`
 
 Циклы
