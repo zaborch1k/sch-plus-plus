@@ -73,7 +73,7 @@ class Interp:
         self.error = None
         self.qmove = []
         self.qpos = []
-        self.pos = [11, 11]
+        self.pos = [1, 1]
         m = 21
         self.pc = 0
 

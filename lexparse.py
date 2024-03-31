@@ -1,7 +1,7 @@
 # файл с лексером и парсером
-import pycparser.ply.lex as lex
-import pycparser.ply.yacc as yacc
-from pycparser.ply.lex import LexToken
+import ply.lex as lex
+import ply.yacc as yacc 
+from ply.lex import LexToken
 
 import re
 
