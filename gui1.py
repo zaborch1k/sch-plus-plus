@@ -1,12 +1,22 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QFont, QPixmap, QIcon, QPainter
+import os
+import sys
+
+def resource_path(p):
+    if getattr(sys, 'frozen', False):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.getcwd()
+    return os.path.join(base_path, p)
+
 
 def main():
     app = QApplication([])
     window = QWidget()
     window.setFixedSize(1000, 500)
-    window.setWindowTitle("sch++")
-    window.setWindowIcon(QIcon('sch1.ico'))
+    window.setWindowTitle("sch1++")
+    window.setWindowIcon(QIcon(resource_path('sch1.ico')))
     window.setStyleSheet('background : rgb(41, 41, 41)')
 
     layout = QHBoxLayout()
@@ -39,12 +49,12 @@ def main():
     scene = QGraphicsScene()
 
     field = QGraphicsPixmapItem()
-    field.setPixmap(QPixmap('field.png').scaled(470, 470))
+    field.setPixmap(QPixmap(resource_path('field.png')).scaled(470, 470))
     scene.addItem(field)
 
     global performer
     performer = QGraphicsPixmapItem()
-    performer.setPixmap(QPixmap('performer.jpg').scaled(15, 15))
+    performer.setPixmap(QPixmap(resource_path('performer.jpg')).scaled(15, 15))
     performer.setFlags(QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsMovable)
     performer.setOffset(29.6, 428)
     scene.addItem(performer)
@@ -140,7 +150,7 @@ def err_msg(err):
     error.setStyleSheet('''font : Cascadia Code 10px; ''')
     error.setIconPixmap(QPixmap('warning.jpg').scaled(50,50))
     error.setText('\n'+err)
-    error.setWindowIcon(QIcon('sch1.ico'))
+    error.setWindowIcon(QIcon(resource_path('sch1.ico')))
     error.setWindowTitle('ooops error :(((')
     error.exec_()
 

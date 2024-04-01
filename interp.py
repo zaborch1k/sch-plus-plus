@@ -166,6 +166,13 @@ class Interp:
                 self.qpos.append(self.pos)
             self.pc += 1
 
+def path(p):
+    if getattr(sys, 'frozen', False):
+        base = sys._MEIPASS
+    else:
+        base = os.getcwd()
+    return os.path.join(base, p)
+
 def get_data(data):
     return do_interp(data)
 
