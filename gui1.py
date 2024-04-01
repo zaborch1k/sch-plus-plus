@@ -67,7 +67,7 @@ def main():
     button.clicked.connect(stop)
     button1.clicked.connect(start)
     button2.clicked.connect(save)
-    button3.clicked.connect(open)
+    button3.clicked.connect(b_open)
 
     main_layout = QHBoxLayout()
     main_layout.addLayout(layout2)
@@ -85,9 +85,9 @@ def start():
     mdata = None
     err = None
 
-    code = text_box.toPlainText()
+    code = text_box.toPlainText().strip()
 
-    if code:
+    if len(code) != 0:
         data = get_data(code)
         
         mdata = data[0]
@@ -116,20 +116,31 @@ def execute(dir, num):
         performer.moveBy(0, -step*num)
 
 def stop():
-    pass
+    performer.setPos(0, 0)
 
 def save():
-    pass
+    global text_box
+    filename, _ = QFileDialog.getSaveFileName(None, 'Save File', '.', 'Text Files (*.txt);;All Files (*)')
+    
+    if filename:
+        with open(filename, 'w') as file:
+            file.write(text_box.toPlainText())
 
-def open():
-    pass
+def b_open():
+    global text_box
+    filename, _ = QFileDialog.getOpenFileName(None, 'Open File', '.', 'Text Files (*.txt);;All Files (*)')
+
+    if filename:
+        with open(filename, encoding="utf-8") as file:
+            text_box.clear()
+            text_box.insertPlainText(file.read())
 
 def err_msg(err):
     error = QMessageBox()
-    error.setStyleSheet('''font : Cascadia Code 10px; 
-                        color : rgb(51, 170, 36);
-                        background-color : rgb(40, 40, 40)''')
-    error.setText(err)
+    error.setStyleSheet('''font : Cascadia Code 10px; ''')
+    error.setIconPixmap(QPixmap('warning.jpg').scaled(50,50))
+    error.setText('\n'+err)
+    error.setWindowIcon(QIcon('sch1.ico'))
     error.setWindowTitle('ooops error :(((')
     error.exec_()
 

@@ -24,7 +24,7 @@ prog_space = tk.Tk()
 prog_space.title("interp") 
 prog_space.geometry("500x500")
 prog_space.resizable(False, False)
-prog_space.iconbitmap(resource_path('sh1t.ico'))
+prog_space.iconbitmap(resource_path('sch1.ico'))
 window = None
 file_name = ""
 first = True

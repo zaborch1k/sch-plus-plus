@@ -198,7 +198,10 @@ def p_groupstat(p):
                  | '''
     global group
     if len(p) == 3 and p[1]:
-        group = group + [p[2]]
+        if group:
+            group = group + [p[2]]
+        else:
+            group = [p[2]]
         p[0] = group
     elif len(p) == 3 and p[2]:
         group = [p[2]]

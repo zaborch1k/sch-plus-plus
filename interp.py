@@ -1,5 +1,4 @@
 # interp
-
 class Interp:
     def __init__(self, prog):
         self.prog = list(prog.values())
@@ -115,7 +114,7 @@ class Interp:
             elif op == 'CALL':
                 if instr[1] in self.vars:
                     del self.prog[self.pc]
-                    self.prog.insert(self.pc+1, self.vars[instr[1]][1])
+                    self.prog.insert(self.pc+1, self.vars[instr[1]][1][0])
                     self.pc -= 1
                 else:
                     self.error = 'вызов неопределенной процедуры'
@@ -157,7 +156,7 @@ class Interp:
 
                     self.pc -= 1
             
-            if self.pos[0] > m or self.pos[1] > m or self.pos[0] < 0 or self.pos[1] <0 :
+            if self.pos[0] > m or self.pos[1] > m or self.pos[0] < 1 or self.pos[1] < 1 :
                 del self.qmove[-1]
                 self.error = 'попытка выйти за границы поля'
                 
