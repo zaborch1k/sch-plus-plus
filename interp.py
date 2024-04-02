@@ -124,16 +124,16 @@ class Interp:
                 if instr[1] == 'RIGHT':
                     if self.pos[0] == m:
                         marker = True
-                if instr[1] == 'LEFT':
+                elif instr[1] == 'LEFT':
                     if self.pos[0] == 1:
                         marker = True
-                if instr[1] == 'UP':
+                elif instr[1] == 'UP':
                     if self.pos[1] == m:
                         marker = True
                 else:
                     if self.pos[1] == 1:
                         marker = True
-                
+
                 if marker:
                     del self.prog[self.pc]
                     for z in instr[2]:
@@ -165,6 +165,13 @@ class Interp:
             else:
                 self.qpos.append(self.pos)
             self.pc += 1
+
+def path(p):
+    if getattr(sys, 'frozen', False):
+        base = sys._MEIPASS
+    else:
+        base = os.getcwd()
+    return os.path.join(base, p)
 
 def get_data(data):
     return do_interp(data)

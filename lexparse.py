@@ -413,8 +413,10 @@ def p_error(p):
 # only for debugging
 
 data = '''
+IFBLOCK RIGHT
+    RIGHT 3
+ENDIF
 '''
-
 def ccount(s, word):
     return len(re.findall(word, s))
 
@@ -457,7 +459,7 @@ def parse(data):
         lexer1 = lex.lex()
         lexer = IndentLex(lexer1)
         if not lexer.error and not err:
-            parser = yacc.yacc()
+            parser = yacc.yacc(debug=False, errorlog=yacc.NullLogger(), debuglog=None)
             p = parser.parse(data, lexer=lexer, debug=False)
         else:
             error = err
@@ -469,5 +471,3 @@ def parse(data):
     elif perror:
         return {'0': perror}
     return p
-
-#print(parse(data))

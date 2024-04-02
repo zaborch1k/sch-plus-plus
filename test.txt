@@ -1,0 +1,27 @@
+RIGHT 4
+LEFT 3
+UP 10
+DOWN 7
+
+SET varA = 2
+SET varB = varA + 2
+RIGHT varB
+
+PROCEDURE a
+    UP 11
+ENDPROC
+
+REPEAT 3
+    REPEAT 2
+        UP 1
+    ENDREPEAT
+ENDREPEAT
+
+CALL a
+
+IFBLOCK UP
+    DOWN 20
+ENDIF
+
+
+
