@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QFont, QPixmap, QIcon, QPainter
+from PyQt5.QtGui import QFont, QPixmap, QIcon
 from PyQt5.QtCore import *
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -14,7 +15,7 @@ class MainWindow(QMainWindow):
         self.height = QApplication.desktop().height()
         self.main_widget.setMaximumSize(self.width, self.height)
 
-        self.setWindowTitle("sch++")
+        self.setWindowTitle("sch1++")
         self.setWindowIcon(QIcon('sch1.ico'))
         self.setStyleSheet('background : rgb(41, 41, 41)')
 
@@ -25,8 +26,8 @@ class MainWindow(QMainWindow):
         self.layout1 = QVBoxLayout()
         self.layout2 = QVBoxLayout()
 
-        self.widget1.setStyleSheet('background : rgb(41, 41, 41);')#####
-        self.widget2.setStyleSheet('background : rgb(41, 41, 41)')#######
+        self.widget1.setStyleSheet('background : rgb(41, 41, 41);')
+        self.widget2.setStyleSheet('background : rgb(41, 41, 41)')
 
         self.widget1.setMaximumWidth(self.width//3*1)
 
@@ -45,11 +46,13 @@ class MainWindow(QMainWindow):
 
             def enterEvent(self, event):
                 super().enterEvent(event)
-                self.setStyleSheet('background : rgb(80, 80, 80); color : rgb(51, 170, 36); font : 15px Calibri; border : 0px; border-radius : 3')
+                self.setStyleSheet('background : rgb(80, 80, 80); color : rgb(51, 170, 36); font : 15px Calibri;\
+                                   border : 0px; border-radius : 3')
 
             def leaveEvent(self, event):
                 super().leaveEvent(event)
-                self.setStyleSheet('background : rgb(41, 41, 41); color : rgb(180, 180, 180); font : 15px Calibri; border : 0px; border-radius : 3')
+                self.setStyleSheet('background : rgb(41, 41, 41); color : rgb(180, 180, 180); font : 15px Calibri;\
+                                    border : 0px; border-radius : 3')
 
         buttons = [NewButton('stop'), NewButton('start'), NewButton('save'), NewButton('open')]
 
@@ -58,6 +61,8 @@ class MainWindow(QMainWindow):
             b.setFixedWidth(50)
             b.setFixedHeight(19)
             b.setStyleSheet('font : 15px Calibri; border : 0px; border-radius : 3;')
+
+        buttons[1].clicked.connect(self.execute)
         
         self.butt_widget.setLayout(self.butt_layout)
 
@@ -75,7 +80,8 @@ class MainWindow(QMainWindow):
 
         # text box
         self.text_box = QPlainTextEdit()
-        self.text_box.setStyleSheet('selection-background-color : rgba(51, 170, 36, 50); border : 0px; color : rgb(51, 170, 36);')
+        self.text_box.setStyleSheet('selection-background-color : rgba(51, 170, 36, 50); border : 0px;\
+                                     color : rgb(51, 170, 36);')
         self.text_box.setFont(QFont('Cascadia Code', 10))
 
         self.layout1.addWidget(self.butt_widget, alignment = Qt.AlignTop | Qt.AlignLeft)
@@ -130,6 +136,7 @@ class MainWindow(QMainWindow):
 
         self.layout2.addWidget(self.hview2)
 
+
         # klad tut -> (log info)
 
         # data from interp
@@ -141,7 +148,9 @@ class MainWindow(QMainWindow):
         self.log_label = QPlainTextEdit()
         self.log_label.setMaximumHeight(200)
         self.log_label.setReadOnly(True)
-        self.log_label.setStyleSheet('selection-background-color : rgba(51, 170, 36, 50); border : 0px; color : rgb(180, 180, 180); font : 12px Cascadia Code')
+        self.log_label.setStyleSheet('selection-background-color : rgba(51, 170, 36, 50);\
+                                     border-radius : 3; border : 0px; color : rgb(180, 180, 180);\
+                                     font : 12px Cascadia Code')
         
         # add timer
         self.l = len(self.data)
@@ -159,17 +168,21 @@ class MainWindow(QMainWindow):
         
         self.layout2.addWidget(self.log_label)
 
-        
+
+        # all the rest
         self.widget1.setLayout(self.layout1)
         self.widget2.setLayout(self.layout2)
 
         self.main_layout.addWidget(self.widget1)
         self.main_layout.addWidget(self.bview)
         self.main_layout.addWidget(self.widget2)
-        
 
         self.main_widget.setLayout(self.main_layout)
         self.setCentralWidget(self.main_widget)
+    
+    # animation of the performer
+    def execute(self):
+        pass
 
 
 def main():
