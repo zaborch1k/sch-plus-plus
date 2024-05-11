@@ -35,7 +35,7 @@ class MainWindow(QMainWindow):
         # buttons
         self.butt_widget = QWidget()
         self.butt_widget.setStyleSheet('background : rgb(41, 41, 41); color : rgb(180, 180, 180)')
-        self.butt_widget.setFixedHeight(50)
+        self.butt_widget.setFixedHeight(35)
 
         self.butt_layout = QHBoxLayout()
 
@@ -61,16 +61,28 @@ class MainWindow(QMainWindow):
         
         self.butt_widget.setLayout(self.butt_layout)
 
+        # horizontal border
+        self.hscene = QGraphicsScene()
+        
+        self.hborder = QGraphicsPixmapItem()
+        self.hborder.setPixmap(QPixmap('border.png').scaled(self.width//3, 1))
+        self.hscene.addItem(self.hborder)
+
+        self.hview = QGraphicsView(self.hscene)
+        self.hview.setStyleSheet('border : 0px;')
+        self.hview.setFixedHeight(1)
+        self.hview.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff) 
+
         # text box
         self.text_box = QPlainTextEdit()
         self.text_box.setStyleSheet('border : 0px; color : rgb(51, 170, 36);')
         self.text_box.setFont(QFont('Cascadia Code', 10))
 
         self.layout1.addWidget(self.butt_widget, alignment = Qt.AlignTop | Qt.AlignLeft)
-        # self.layout1.addWidget(self.bview)
+        self.layout1.addWidget(self.hview)
         self.layout1.addWidget(self.text_box)
 
-        # border2
+        # vertical border
         self.bscene = QGraphicsScene()
         
         self.border = QGraphicsPixmapItem()
@@ -103,6 +115,33 @@ class MainWindow(QMainWindow):
         self.view.setStyleSheet('border : 0px;')
 
         self.layout2.addWidget(self.view)
+
+        # klad tut -> (log info)
+        self.data = ['(3, 4)', '(4, 5)', '(6, 7)', '(8, 8)', 'err :(', '(3, 4)', '(4, 5)', '(6, 7)', '(8, 8)', 'err :('] # data from interp
+
+        # self.area = QScrollArea(self)
+        self.log_label = QLabel()
+        # self.area.setFixedHeight(200)
+
+        # self.log_label.setText('text\n' * 1000)
+        
+        # add timer
+        self.l = len(self.data)
+        self.n = 0
+
+        def add_log_text():
+            self.n += 1
+            if self.l <= self.n:
+                self.timer.stop()
+            self.log_label.setText(self.log_label.text() + '\n' + self.data[self.n-1])
+
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(add_log_text)
+        self.timer.start(1000)
+        
+        # self.area.setWidget(self.log_label)
+        self.layout2.addWidget(self.log_label)
+
 
         
         self.widget1.setLayout(self.layout1)
