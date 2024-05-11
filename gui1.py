@@ -56,13 +56,17 @@ class MainWindow(QMainWindow):
 
         buttons = [NewButton('stop'), NewButton('start'), NewButton('save'), NewButton('open')]
 
+        buttons[0].clicked.connect(self.stop)
+        buttons[1].clicked.connect(self.start)
+        buttons[2].clicked.connect(self.save)
+        buttons[3].clicked.connect(self.b_open)
+
         for b in buttons:
             self.butt_layout.addWidget(b, alignment = Qt.AlignTop | Qt.AlignLeft)
             b.setFixedWidth(50)
             b.setFixedHeight(19)
             b.setStyleSheet('font : 15px Calibri; border : 0px; border-radius : 3;')
 
-        buttons[1].clicked.connect(self.execute)
         
         self.butt_widget.setLayout(self.butt_layout)
 
@@ -180,9 +184,71 @@ class MainWindow(QMainWindow):
         self.main_widget.setLayout(self.main_layout)
         self.setCentralWidget(self.main_widget)
     
-    # animation of the performer
-    def execute(self):
+    def stop(self):
+        self.performer.setPos(0, 0)
+
+    def start(self):
+        from interp import get_data
+
+        self.performer.setPos(0, 0)
+
+        self.mdata = None
+        self.err = None
+
+        self.code = self.text_box.toPlainText().strip()
+
+        if len(self.code) != 0:
+            data = get_data(self.code)
+        
+            self.mdata = data[0]
+            self.err = data[1]
+            self.pos = data[2]#
+            
+            for i in self.mdata:
+                self.execute(i[0], i[1])
+            if self.err:
+                self.err_msg(self.err)
+
+    def save(self):
+        filename, _ = QFileDialog.getSaveFileName(None, 'Save File', '.', 'Text Files (*.txt);;All Files (*)')
+        
+        if filename:
+            with open(filename, 'w') as file:
+                file.write(self.text_box.toPlainText())
+
+    def b_open(self):
         pass
+        filename, _ = QFileDialog.getOpenFileName(None, 'Open File', '.', 'Text Files (*.txt);;All Files (*)')
+
+        if filename:
+            with open(filename, encoding="utf-8") as file:
+                self.text_box.clear()
+                self.text_box.insertPlainText(file.read())
+
+    def err_msg(self, err):
+        self.error = QMessageBox()
+        self.error.setStyleSheet('''font : Cascadia Code 10px; ''')
+        self.error.setIconPixmap(QPixmap('warning.jpg').scaled(50,50))
+        self.error.setText('\n'+err)
+        self.error.setWindowIcon(QIcon('sch1.ico'))
+        self.error.setWindowTitle('ooops error :(((')
+        self.error.exec_()
+
+    # animation of the performer
+    def execute(self, dir, num):
+        step = 20
+
+        if dir == 'RIGHT':
+            self.performer.moveBy(step*num, 0)
+
+        elif dir == 'LEFT':
+            self.performer.moveBy(-step*num, 0)
+
+        elif dir == 'DOWN':
+            self.performer.moveBy(0, step*num)
+
+        elif dir == 'UP':
+            self.performer.moveBy(0, -step*num)
 
 
 def main():
