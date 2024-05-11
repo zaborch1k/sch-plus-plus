@@ -75,7 +75,7 @@ class MainWindow(QMainWindow):
 
         # text box
         self.text_box = QPlainTextEdit()
-        self.text_box.setStyleSheet('border : 0px; color : rgb(51, 170, 36);')
+        self.text_box.setStyleSheet('selection-background-color : rgba(51, 170, 36, 50); border : 0px; color : rgb(51, 170, 36);')
         self.text_box.setFont(QFont('Cascadia Code', 10))
 
         self.layout1.addWidget(self.butt_widget, alignment = Qt.AlignTop | Qt.AlignLeft)
@@ -116,14 +116,32 @@ class MainWindow(QMainWindow):
 
         self.layout2.addWidget(self.view)
 
+        # horizontal border2
+        self.hscene2 = QGraphicsScene()
+        
+        self.hborder2 = QGraphicsPixmapItem()
+        self.hborder2.setPixmap(QPixmap('border.png').scaled(self.width//3*2, 1))
+        self.hscene2.addItem(self.hborder2)
+
+        self.hview2 = QGraphicsView(self.hscene2)
+        self.hview2.setStyleSheet('border : 0px;')
+        self.hview2.setFixedHeight(1)
+        self.hview2.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff) 
+
+        self.layout2.addWidget(self.hview2)
+
         # klad tut -> (log info)
-        self.data = ['(3, 4)', '(4, 5)', '(6, 7)', '(8, 8)', 'err :(', '(3, 4)', '(4, 5)', '(6, 7)', '(8, 8)', 'err :('] # data from interp
 
-        # self.area = QScrollArea(self)
-        self.log_label = QLabel()
-        # self.area.setFixedHeight(200)
-
-        # self.log_label.setText('text\n' * 1000)
+        # data from interp
+        self.data = [
+            '(3, 4)', '(4, 5)', '(6, 7)', '(8, 8)', 'err :(', '(3, 4)', '(4, 5)', '(6, 7)', 
+            '(8, 8)', 'err :(', 'dffffffffg'
+            ]
+        
+        self.log_label = QPlainTextEdit()
+        self.log_label.setMaximumHeight(200)
+        self.log_label.setReadOnly(True)
+        self.log_label.setStyleSheet('selection-background-color : rgba(51, 170, 36, 50); border : 0px; color : rgb(180, 180, 180); font : 12px Cascadia Code')
         
         # add timer
         self.l = len(self.data)
@@ -133,15 +151,13 @@ class MainWindow(QMainWindow):
             self.n += 1
             if self.l <= self.n:
                 self.timer.stop()
-            self.log_label.setText(self.log_label.text() + '\n' + self.data[self.n-1])
+            self.log_label.setPlainText(self.log_label.toPlainText() + '\n' + self.data[self.n-1])
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(add_log_text)
-        self.timer.start(1000)
+        self.timer.start(500)
         
-        # self.area.setWidget(self.log_label)
         self.layout2.addWidget(self.log_label)
-
 
         
         self.widget1.setLayout(self.layout1)
