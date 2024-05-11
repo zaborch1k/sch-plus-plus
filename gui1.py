@@ -35,16 +35,29 @@ class MainWindow(QMainWindow):
         # buttons
         self.butt_widget = QWidget()
         self.butt_widget.setStyleSheet('background : rgb(41, 41, 41); color : rgb(180, 180, 180)')
+        self.butt_widget.setFixedHeight(50)
 
         self.butt_layout = QHBoxLayout()
 
-        buttons = [QPushButton('stop'), QPushButton('start'), QPushButton('save'), QPushButton('open')]
+        class NewButton(QPushButton):
+            entered = pyqtSignal()
+            leaved = pyqtSignal()
+
+            def enterEvent(self, event):
+                super().enterEvent(event)
+                self.setStyleSheet('background : rgb(80, 80, 80); color : rgb(51, 170, 36); font : 15px Calibri; border : 0px; border-radius : 3')
+
+            def leaveEvent(self, event):
+                super().leaveEvent(event)
+                self.setStyleSheet('background : rgb(41, 41, 41); color : rgb(180, 180, 180); font : 15px Calibri; border : 0px; border-radius : 3')
+
+        buttons = [NewButton('stop'), NewButton('start'), NewButton('save'), NewButton('open')]
 
         for b in buttons:
-            self.butt_layout.addWidget(b)
-            b.setMinimumHeight(35)
-            b.setMinimumWidth(100)
-            b.setStyleSheet('font : 11.5px Verdana')
+            self.butt_layout.addWidget(b, alignment = Qt.AlignTop | Qt.AlignLeft)
+            b.setFixedWidth(50)
+            b.setFixedHeight(19)
+            b.setStyleSheet('font : 15px Calibri; border : 0px; border-radius : 3;')
         
         self.butt_widget.setLayout(self.butt_layout)
 
@@ -53,7 +66,7 @@ class MainWindow(QMainWindow):
         self.text_box.setStyleSheet('border : 0px; color : rgb(51, 170, 36);')
         self.text_box.setFont(QFont('Cascadia Code', 10))
 
-        self.layout1.addWidget(self.butt_widget, alignment= Qt.AlignTop | Qt.AlignLeft)
+        self.layout1.addWidget(self.butt_widget, alignment = Qt.AlignTop | Qt.AlignLeft)
         # self.layout1.addWidget(self.bview)
         self.layout1.addWidget(self.text_box)
 
@@ -66,7 +79,9 @@ class MainWindow(QMainWindow):
 
         self.bview = QGraphicsView(self.bscene)
         self.bview.setStyleSheet('border : 0px;')
-        self.bview.setFixedSize(2, self.height)
+        self.bview.setFixedWidth(1)
+        self.bview.setMaximumHeight(self.height)
+        self.bview.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
 
         # widget2
