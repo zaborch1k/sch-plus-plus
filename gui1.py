@@ -2,7 +2,6 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QFont, QPixmap, QIcon
 from PyQt5.QtCore import *
 
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -183,7 +182,6 @@ class MainWindow(QMainWindow):
     # animation of the performer
     def execute(self):
         pass
-
 
 def main():
     app = QApplication([])
