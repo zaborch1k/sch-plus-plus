@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QFont, QPixmap, QIcon
+from PyQt5.QtGui import QFont, QPixmap, QIcon, QPalette, QBrush
 from PyQt5.QtCore import *
 
 class MainWindow(QMainWindow):
@@ -65,7 +65,6 @@ class MainWindow(QMainWindow):
             b.setFixedWidth(50)
             b.setFixedHeight(19)
             b.setStyleSheet('font : 15px Calibri; border : 0px; border-radius : 3;')
-
         
         self.butt_widget.setLayout(self.butt_layout)
 
@@ -108,22 +107,40 @@ class MainWindow(QMainWindow):
         # widget2
 
         # field
-        self.scene = QGraphicsScene()
+        self.field_area = QScrollArea()
+        self.field_area.setWidgetResizable(True)
+        self.field_area.setStyleSheet('border : 0px')
 
-        self.field = QGraphicsPixmapItem()
-        self.field.setPixmap(QPixmap('field.png').scaled(470, 470))
-        self.scene.addItem(self.field)
+        self.back_widget = QWidget()
 
-        self.performer = QGraphicsPixmapItem()
-        self.performer.setPixmap(QPixmap('performer.jpg').scaled(15, 15))
-        self.performer.setFlags(QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsMovable)
-        self.performer.setOffset(29.6, 428)
-        self.scene.addItem(self.performer)
+        self.field = QWidget()
+        self.field.setFixedSize(470, 470)
 
-        self.view = QGraphicsView(self.scene)
-        self.view.setStyleSheet('border : 0px;')
+        # not working yet
+        self.background = QPixmap('field.png').scaled(470, 470)
+        self.pal = self.field.palette()
+        self.pal.setBrush(QPalette.Background, QBrush(self.background))
+        self.field.setPalette(self.pal)
+        
+        self.field_layout = QHBoxLayout()
+        self.field_layout.addWidget(self.field)
 
-        self.layout2.addWidget(self.view)
+        self.back_widget.setLayout(self.field_layout)
+        self.field_area.setWidget(self.back_widget)
+
+        self.layout2.addWidget(self.field_area)
+
+        self.performer = QLabel()
+        self.performer.setFixedWidth(13)
+        self.performer.setFixedHeight(13)
+        self.performer.setStyleSheet('background : rgb(51, 170, 36); font : 15px Calibri; border : 0px; border-radius : 6;')
+        self.field_layout.addWidget(self.performer)
+
+        # just an mvp animation
+        self.anim = QPropertyAnimation(self.performer, b'pos')
+        self.anim.setDuration(10000)
+        self.anim.setEndValue(QPoint(300, 300))
+        self.anim.start()
 
         # horizontal border2
         self.hscene2 = QGraphicsScene()
@@ -139,7 +156,6 @@ class MainWindow(QMainWindow):
 
         self.layout2.addWidget(self.hview2)
 
-
         # klad tut -> (log info)
 
         # data from interp
@@ -149,7 +165,7 @@ class MainWindow(QMainWindow):
             ]
         
         self.log_label = QPlainTextEdit()
-        self.log_label.setMaximumHeight(200)
+        self.log_label.setMaximumHeight(150)
         self.log_label.setReadOnly(True)
         self.log_label.setStyleSheet('selection-background-color : rgba(51, 170, 36, 50);\
                                      border-radius : 3; border : 0px; color : rgb(180, 180, 180);\
