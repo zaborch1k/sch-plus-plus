@@ -52,12 +52,12 @@ def main():
     field.setPixmap(QPixmap(resourse_path('field.png')).scaled(470, 470))
     scene.addItem(field)
 
-    global performer
-    performer = QGraphicsPixmapItem()
-    performer.setPixmap(QPixmap(resourse_path('performer.jpg')).scaled(15, 15))
-    performer.setFlags(QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsMovable)
-    performer.setOffset(29.6, 428)
-    scene.addItem(performer)
+    # global performer
+    # performer = QGraphicsPixmapItem()
+    # performer.setPixmap(QPixmap(resourse_path('performer.jpg')).scaled(15, 15))
+    # performer.setFlags(QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsMovable)
+    # performer.setOffset(29.6, 428)
+    # scene.addItem(performer)
 
     view = QGraphicsView(scene)
     view.setStyleSheet('border : 0px;')

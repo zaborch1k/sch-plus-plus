@@ -114,13 +114,9 @@ class MainWindow(QMainWindow):
         self.back_widget = QWidget()
 
         self.field = QWidget()
-        self.field.setFixedSize(470, 470)
+        self.field.setFixedSize(424, 424)
+        self.field.setStyleSheet('background-image : url(field1.jpg)')
 
-        # not working yet
-        self.background = QPixmap('field.png').scaled(470, 470)
-        self.pal = self.field.palette()
-        self.pal.setBrush(QPalette.Background, QBrush(self.background))
-        self.field.setPalette(self.pal)
         
         self.field_layout = QHBoxLayout()
         self.field_layout.addWidget(self.field)
