@@ -1,10 +1,13 @@
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QFont, QPixmap, QIcon, QPalette, QBrush
+from PyQt5.QtGui import QFont, QPixmap, QIcon
 from PyQt5.QtCore import *
+
+################################################## CURRENT VERSION ######################################################
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.firstTimeLog = True
         self.setUI()
 
     def setUI(self):
@@ -152,13 +155,8 @@ class MainWindow(QMainWindow):
 
         self.layout2.addWidget(self.hview2)
 
-        # klad tut -> (log info)
 
-        # data from interp
-        self.data = [
-            '(3, 4)', '(4, 5)', '(6, 7)', '(8, 8)', 'err :(', '(3, 4)', '(4, 5)', '(6, 7)', 
-            '(8, 8)', 'err :(', 'dffffffffg'
-            ]
+        # klad tut -> (log info)
         
         self.log_label = QPlainTextEdit()
         self.log_label.setMaximumHeight(150)
@@ -166,20 +164,6 @@ class MainWindow(QMainWindow):
         self.log_label.setStyleSheet('selection-background-color : rgba(51, 170, 36, 50);\
                                      border-radius : 3; border : 0px; color : rgb(180, 180, 180);\
                                      font : 12px Cascadia Code')
-        
-        # add timer
-        self.l = len(self.data)
-        self.n = 0
-
-        def add_log_text():
-            self.n += 1
-            if self.l <= self.n:
-                self.timer.stop()
-            self.log_label.setPlainText(self.log_label.toPlainText() + '\n' + self.data[self.n-1])
-
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(add_log_text)
-        self.timer.start(500)
         
         self.layout2.addWidget(self.log_label)
 
@@ -201,7 +185,7 @@ class MainWindow(QMainWindow):
     def start(self):
         from interp import get_data
 
-        self.performer.setPos(0, 0)
+        # self.performer.setPos(0, 0)
 
         self.mdata = None
         self.err = None
@@ -213,13 +197,50 @@ class MainWindow(QMainWindow):
         
             self.mdata = data[0]
             self.err = data[1]
-            self.pos = data[2]#
-            
+            self.qpos = data[2]
+
+            if self.log_label.toPlainText() == '\n':
+                self.log_label.setPlainText = ''
+
+            self.do_log()
+
             for i in self.mdata:
-                self.execute(i[0], i[1])
+                # self.execute(i[0], i[1])
+                pass
             if self.err:
                 self.err_msg(self.err)
+        
+    def do_log(self):
+        self.l = len(self.qpos)
+        self.n = -1
 
+        def add_log_text():
+            self.n += 1
+            if self.l == self.n:
+                self.timer.stop()
+            if self.n == 0:
+                self.log_label.setPlainText(self.log_label.toPlainText() + '[1, 1]')
+            else:
+                self.log_label.setPlainText(self.log_label.toPlainText() + '\n' + str(self.qpos[self.n-1]))
+        
+        
+        self.timer = QTimer(self)
+        self.timer.start(500)
+
+        if self.firstTimeLog:
+            self.log_label.setPlainText('[execution started]\n')
+            self.firstTimeLog = False
+        else:
+            self.log_label.setPlainText(self.log_label.toPlainText() + '\n\n[execution started]\n')
+        
+        if self.qpos:
+            self.timer.timeout.connect(add_log_text)
+        elif self.err:
+            self.log_label.setPlainText(self.log_label.toPlainText() + '\n' + f'err : {self.err}')
+        else:
+            self.timer.stop()
+
+       
     def save(self):
         filename, _ = QFileDialog.getSaveFileName(None, 'Save File', '.', 'Text Files (*.txt);;All Files (*)')
         
@@ -228,7 +249,6 @@ class MainWindow(QMainWindow):
                 file.write(self.text_box.toPlainText())
 
     def b_open(self):
-        pass
         filename, _ = QFileDialog.getOpenFileName(None, 'Open File', '.', 'Text Files (*.txt);;All Files (*)')
 
         if filename:
@@ -245,7 +265,7 @@ class MainWindow(QMainWindow):
         self.error.setWindowTitle('ooops error :(((')
         self.error.exec_()
 
-    # animation of the performer
+    # animation of the performer (REWRITE) 
     def execute(self, dir, num):
         step = 20
 
@@ -260,6 +280,8 @@ class MainWindow(QMainWindow):
 
         elif dir == 'UP':
             self.performer.moveBy(0, -step*num)
+
+################################################## OLD VERSION ###########################################################
 
 def main():
     app = QApplication([])
