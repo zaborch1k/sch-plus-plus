@@ -163,7 +163,8 @@ class Interp:
             if self.error:
                 self.prog = {}
             else:
-                self.qpos.append(self.pos)
+                self.qpos.append(self.pos.copy())
+                print(self.qpos)
             self.pc += 1
 
 def path(p):
@@ -178,7 +179,7 @@ def get_data(data):
 
 
 def do_interp(data):
-    from lexparse import parse
+    from backend.lexparse import parse
     i = None
     data = parse(data)
     i = Interp(data)

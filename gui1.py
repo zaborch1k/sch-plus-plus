@@ -56,14 +56,14 @@ class MainWindow(QMainWindow):
                 self.setStyleSheet('background : rgb(41, 41, 41); color : rgb(180, 180, 180); font : 15px Calibri;\
                                     border : 0px; border-radius : 3')
 
-        buttons = [NewButton('stop'), NewButton('start'), NewButton('save'), NewButton('open')]
+        self.buttons = [NewButton('stop'), NewButton('start'), NewButton('save'), NewButton('open')]
 
-        buttons[0].clicked.connect(self.stop)
-        buttons[1].clicked.connect(self.start)
-        buttons[2].clicked.connect(self.save)
-        buttons[3].clicked.connect(self.b_open)
+        self.buttons[0].clicked.connect(self.stop)
+        self.buttons[1].clicked.connect(self.start)
+        self.buttons[2].clicked.connect(self.save)
+        self.buttons[3].clicked.connect(self.b_open)
 
-        for b in buttons:
+        for b in self.buttons:
             self.butt_layout.addWidget(b, alignment = Qt.AlignTop | Qt.AlignLeft)
             b.setFixedWidth(50)
             b.setFixedHeight(19)
@@ -110,36 +110,23 @@ class MainWindow(QMainWindow):
         # widget2
 
         # field
-        self.field_area = QScrollArea()
-        self.field_area.setWidgetResizable(True)
-        self.field_area.setStyleSheet('border : 0px')
+        self.scene = QGraphicsScene()
 
-        self.back_widget = QWidget()
-
-        self.field = QWidget()
-        self.field.setFixedSize(424, 424)
-        self.field.setStyleSheet('background-image : url(field1.jpg)')
-
-        
-        self.field_layout = QHBoxLayout()
-        self.field_layout.addWidget(self.field)
-
-        self.back_widget.setLayout(self.field_layout)
-        self.field_area.setWidget(self.back_widget)
-
-        self.layout2.addWidget(self.field_area)
+        self.field = QGraphicsPixmapItem()
+        self.field.setPixmap(QPixmap('field.png').scaled(470, 470))
+        self.scene.addItem(self.field)
 
         self.performer = QLabel()
         self.performer.setFixedWidth(13)
         self.performer.setFixedHeight(13)
         self.performer.setStyleSheet('background : rgb(51, 170, 36); font : 15px Calibri; border : 0px; border-radius : 6;')
-        self.field_layout.addWidget(self.performer)
+        self.scene.addWidget(self.performer)
+        self.performer.move(30, 430)
 
-        # just an mvp animation
-        self.anim = QPropertyAnimation(self.performer, b'pos')
-        self.anim.setDuration(10000)
-        self.anim.setEndValue(QPoint(300, 300))
-        self.anim.start()
+        self.view = QGraphicsView(self.scene)
+        self.view.setStyleSheet('border : 0px;')
+
+        self.layout2.addWidget(self.view)
 
         # horizontal border2
         self.hscene2 = QGraphicsScene()
@@ -180,12 +167,12 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.main_widget)
     
     def stop(self):
-        self.performer.setPos(0, 0)
+        self.performer.move(30, 430)
 
     def start(self):
         from interp import get_data
 
-        # self.performer.setPos(0, 0)
+        self.stop()
 
         self.mdata = None
         self.err = None
@@ -205,8 +192,8 @@ class MainWindow(QMainWindow):
             self.do_log()
 
             for i in self.mdata:
-                # self.execute(i[0], i[1])
-                pass
+                self.execute(i[0], i[1])
+
             if self.err:
                 self.err_msg(self.err)
         
@@ -215,14 +202,15 @@ class MainWindow(QMainWindow):
         self.n = -1
 
         def add_log_text():
+            pos = self.qpos
             self.n += 1
             if self.l == self.n:
                 self.timer.stop()
             if self.n == 0:
                 self.log_label.setPlainText(self.log_label.toPlainText() + '[1, 1]')
             else:
-                self.log_label.setPlainText(self.log_label.toPlainText() + '\n' + str(self.qpos[self.n-1]))
-        
+                print(self.qpos)
+                self.log_label.setPlainText(self.log_label.toPlainText() + '\n' + str(pos[self.n-1]))
         
         self.timer = QTimer(self)
         self.timer.start(500)
@@ -268,18 +256,29 @@ class MainWindow(QMainWindow):
     # animation of the performer (REWRITE) 
     def execute(self, dir, num):
         step = 20
+        
+        self.anim = QPropertyAnimation(self.performer, b'pos')
+        old_x = self.performer.pos().x()
+        old_y = self.performer.pos().y()
+        x = 0
+        y = 0
 
         if dir == 'RIGHT':
-            self.performer.moveBy(step*num, 0)
+            x = step*num
 
         elif dir == 'LEFT':
-            self.performer.moveBy(-step*num, 0)
+            x = -step*num
 
         elif dir == 'DOWN':
-            self.performer.moveBy(0, step*num)
+            y = step*num
 
         elif dir == 'UP':
-            self.performer.moveBy(0, -step*num)
+            y = -step*num
+        
+        self.anim.setEndValue(QPoint(old_x+x, old_y+y))
+        self.anim.start()
+        self.anim.setDuration(num*50)
+        self.performer.move(QPoint(old_x+x, old_y+y))
 
 ################################################## OLD VERSION ###########################################################
 
